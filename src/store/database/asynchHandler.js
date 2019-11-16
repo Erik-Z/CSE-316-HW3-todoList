@@ -43,6 +43,27 @@ export const createTodoListHandler = (todoList) => (dispatch, getState, {getFire
   }).catch((err) => {
     dispatch(actionCreators.createTodoListError)
   })
+}
 
+export const addItemHandler = (todoList, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
   
+}
+
+export const editItemHandler = (todoListID, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  console.log('edit item')
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    items[item.key] = item
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.editListItem)
+    })
+  }).catch((err) => {
+    dispatch(actionCreators.editListItemError)
+  })
+  
+  
+
 }

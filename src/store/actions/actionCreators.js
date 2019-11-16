@@ -43,3 +43,31 @@ export function createTodoListError(error) {
         error
     }
 }
+
+export function addListItem(item) {
+    return {
+        type: 'CREATE_ITEM',
+        item
+    }
+}
+
+export function addListItemError(error) {
+    return {
+        type: 'CREATE_ITEM_ERROR',
+        error
+    }
+}
+
+export function editListItem(item) {
+    return {
+        type: 'EDIT_ITEM',
+        item
+    }
+}
+
+export function editListItemError(error) {
+    return {
+        type: 'EDIT_ITEM_ERROR',
+        error
+    }
+}
