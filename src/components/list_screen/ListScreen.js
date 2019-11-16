@@ -20,6 +20,12 @@ class ListScreen extends Component {
         }));
     }
 
+    handleNewItem = (e) => {
+        const { props } = this;
+        e.preventDefault()
+
+    }
+
     render() {
         const auth = this.props.auth;
         const todoList = this.props.todoList;
@@ -39,6 +45,7 @@ class ListScreen extends Component {
                     <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={todoList.owner} />
                 </div>
                 <ItemsList todoList={todoList} />
+                <div className="card white center add-item-button" onClick={this.handleNewItem}> Add Item </div>
             </div>
         );
     }
@@ -49,7 +56,6 @@ const mapStateToProps = (state, ownProps) => {
   const { todoLists } = state.firestore.data;
   const todoList = todoLists ? todoLists[id] : null;
   todoList.id = id;
-
   return {
     todoList,
     auth: state.firebase.auth,
