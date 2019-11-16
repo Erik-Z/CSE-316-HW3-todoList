@@ -33,11 +33,19 @@ class DatabaseTester extends React.Component {
         });
     }
 
+    handleAddItem = () => {
+        const fireStore = getFirestore();
+        fireStore.collection('todoLists').doc('3F2mdCKWUBD6KXEcOCZO').update({
+            items: fireStore.FieldValue.arrayUnion({assigned_to: '', completed: false, description: '', due_date: '2019-07-11', key: 5})
+        })
+    }
+
     render() {
         return (
             <div>
                 <button onClick={this.handleClear}>Clear Database</button>
                 <button onClick={this.handleReset}>Reset Database</button>
+                <button onClick={this.handleAddItem}>Add item</button>
             </div>)
     }
 }
