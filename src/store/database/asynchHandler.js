@@ -33,3 +33,16 @@ export const registerHandler = (newUser, firebase) => (dispatch, getState, { get
         dispatch(actionCreators.registerError);
     });
 };
+
+export const createTodoListHandler = (todoList) => (dispatch, getState, {getFirebase, getFirestore}) =>{
+  const firestore = getFirestore()
+  firestore.collection('todoLists').add({
+    ...todoList
+  }).then(() => {
+    dispatch(actionCreators.createTodoList)
+  }).catch((err) => {
+    dispatch(actionCreators.createTodoListError)
+  })
+
+  
+}

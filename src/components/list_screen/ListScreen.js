@@ -28,7 +28,7 @@ class ListScreen extends Component {
         }
 
         return (
-            <div className="container white">
+            <div className="card-panel white">
                 <h5 className="grey-text text-darken-3">Todo List</h5>
                 <div className="input-field">
                     <label htmlFor="email">Name</label>
