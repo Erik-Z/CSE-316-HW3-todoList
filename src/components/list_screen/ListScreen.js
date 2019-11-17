@@ -5,13 +5,14 @@ import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
-import { changeNameHandler, changeOwnerHandler } from '../../store/database/asynchHandler'
+import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler } from '../../store/database/asynchHandler'
 import Modal from "./modal.js";
 
 class ListScreen extends Component {
     state = {
         name: this.props.todoList.name,
         owner: this.props.todoList.owner,
+        sorting: null
     }
 
     onChangeNameHandler = (e) => {
@@ -26,6 +27,26 @@ class ListScreen extends Component {
         const { props } = this;
     }
 
+    handleSortDesc = () => {
+        const id = this.props.todoList.id
+        const sorting = this.state.sorting
+
+        this.props.sortDescription(id, sorting)
+
+        if(sorting == 'description'){
+            this.setState({sorting: null})
+        } else {
+            this.setState({sorting: 'description'})
+        }
+    }
+
+    handleSortDueDate = () => {
+        
+    }
+
+    handleSortStatus = () => {
+        
+    }
     
 
     render() {
@@ -49,7 +70,7 @@ class ListScreen extends Component {
                     <input className="active" type="text" name="owner" id="owner" onChange={this.onChangeOwnerHandler} value={this.state.owner} />
                 </div>
                 <div className='row'>
-                    <div className="col s2 list_heading">Description</div>
+                    <div className="col s2 list_heading" onClick={this.handleSortDesc}>Description</div>
                     <div className="col s2 list_heading">Assigned</div>
                     <div className="col s3 list_heading">Due Date</div>
                     <div className="col s3 list_heading">Status</div>
@@ -83,7 +104,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     changeListName: (id, name) => dispatch(changeNameHandler(id, name)),
-    changeListOwner: (id, owner) => dispatch(changeOwnerHandler(id, owner))
+    changeListOwner: (id, owner) => dispatch(changeOwnerHandler(id, owner)),
+    sortDescription: (id, sorting) => dispatch(sortByDescriptionHandler(id, sorting))
 })
 
 export default compose(

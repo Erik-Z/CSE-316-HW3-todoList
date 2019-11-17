@@ -85,3 +85,30 @@ export function deleteList(id) {
         id
     }
 }
+
+export function deleteListItem(item){
+    return {
+        type: 'DELETE_ITEM',
+        item
+    }
+}
+
+export function moveItemUp(item){
+    return {
+        type: 'MOVE_ITEM_UP',
+        item
+    }
+}
+
+export function moveItemDown(item){
+    return {
+        type: 'MOVE_ITEM_DOWN',
+        item
+    }
+}
+
+export function sortItemDescription() {
+    return {
+        type: 'SORT_ITEM_DESCRIPTION',
+    }
+}

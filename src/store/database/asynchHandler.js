@@ -87,3 +87,87 @@ export const deleteListHandler = (todoListID) => (dispatch, getState, {getFireba
   })
 }
 
+export const deleteListItemHandler = (todoListID, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    items.splice(item.index, 1)
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.deleteListItem)
+    })
+  })
+}
+
+export const moveItemUpHandler = (todoListID, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    moveItem(item.index, item.index - 1,items)
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.moveItemUp)
+    })
+  })
+}
+
+export const moveItemDownHandler = (todoListID, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    moveItem(item.index, item.index + 1,items)
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.moveItemDown)
+    })
+  })
+}
+
+export const sortByDescriptionHandler = (todoListID, sorting) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    if(sorting == 'description'){
+      items.sort(compareDescriptionRev)
+    } else {
+      items.sort(compareDescription)
+    }
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.sortItemDescription)
+    })
+  })
+}
+
+function moveItem(from, to, items) {
+  // remove `from` item and store it
+  var f = items.splice(from, 1)[0];
+  // insert stored item into position `to`
+  items.splice(to, 0, f);
+}
+
+function compareDescription(a, b) {
+  var descriptionA = a.description.toUpperCase()
+  var descriptionB = b.description.toUpperCase()
+
+  let comparison = 0
+  if(descriptionA > descriptionB){
+    comparison = 1
+  } else if (descriptionA < descriptionB) {
+    comparison = -1
+  }
+  return comparison
+}
+
+function compareDescriptionRev(a, b){
+  var descriptionA = a.description.toUpperCase()
+  var descriptionB = b.description.toUpperCase()
+
+  let comparison = 0
+  if(descriptionA < descriptionB){
+  comparison = 1
+  } else if (descriptionA > descriptionB) {
+  comparison = -1
+  }
+  return comparison
+}

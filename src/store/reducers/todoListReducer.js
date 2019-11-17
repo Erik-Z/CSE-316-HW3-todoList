@@ -18,6 +18,18 @@ const todoListReducer = (state = initState, action) => {
         case 'DELETE_LIST':
             console.log('Deleted List', action.id)
             return state;
+        case 'DELETE_ITEM':
+            console.log('Deleted List', action.item)
+            return state;
+        case 'MOVE_ITEM_UP':
+            console.log('Move item up: ', action.item)
+            return state;
+        case 'MOVE_ITEM_DOWN':
+            console.log('Move item down: ', action.item)
+            return state;
+        case 'SORT_ITEM_DESCRIPTION':
+            console.log('Sorted Items by Description',)
+            return state;
         default:
             return state;
             break;
