@@ -15,6 +15,9 @@ const todoListReducer = (state = initState, action) => {
         case 'EDIT_ITEM':
             console.log('Edited item', action.item)
             return state;
+        case 'DELETE_LIST':
+            console.log('Deleted List', action.id)
+            return state;
         default:
             return state;
             break;

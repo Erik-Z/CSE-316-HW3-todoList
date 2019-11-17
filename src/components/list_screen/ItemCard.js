@@ -16,13 +16,27 @@ class ItemCard extends React.Component {
                     } 
                 }}>
                 <div className="card-content grey-text text-darken-3">
-                    <span className="card-title">{item.description}</span>
-                    <span className="card-title">{item.assigned_to}</span>
-                    <span className="card-title">{item.due_date}</span>
-                    {
-                        item.completed ? <span className="card-title">completed</span> : <span className="card-title">pending</span>
-                    
-                    }
+                    <div className='row'>
+                        <div className='col s3 card-content item_content'>
+                            {item.description}
+                        </div>
+                        <div className='col s3 card-content item_content'>
+                            {item.assigned_to}
+                        </div>
+                        <div className='col s3 card-content item_content'>
+                            {item.due_date}
+                        </div>
+                        {
+                        item.completed ?
+                        <div className='col s3 card-content item_content'>
+                            completed
+                        </div>
+                        :
+                        <div className='col s3 card-content item_content'>
+                            pending
+                        </div>
+                        }
+                    </div>
                 </div>
                 </Link>
             </div>

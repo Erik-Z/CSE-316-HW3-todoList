@@ -78,3 +78,10 @@ export function changeListName(name) {
         name
     }
 }
+
+export function deleteList(id) {
+    return {
+        type: 'DELETE_LIST',
+        id
+    }
+}

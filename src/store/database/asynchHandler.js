@@ -77,3 +77,13 @@ export const changeOwnerHandler = (todoListID, owner) => (dispatch, getState, {g
     dispatch(actionCreators.changeListName)
   })
 }
+
+export const deleteListHandler = (todoListID) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  firestore.collection('todoLists').doc(todoListID).delete().then(() => {
+    console.log('TodoList' + todoListID + ' deleted.')
+  }).catch(err => {
+    console.log(err)
+  })
+}
+

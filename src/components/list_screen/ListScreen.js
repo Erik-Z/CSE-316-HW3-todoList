@@ -6,6 +6,7 @@ import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 import { changeNameHandler, changeOwnerHandler } from '../../store/database/asynchHandler'
+import Modal from "./modal.js";
 
 class ListScreen extends Component {
     state = {
@@ -25,16 +26,20 @@ class ListScreen extends Component {
         const { props } = this;
     }
 
+    
+
     render() {
         const auth = this.props.auth;
         const todoList = this.props.todoList;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
-
+        const nextitemkey = Math.max.apply(Math, todoList.items.map(function(o) { return o.key; })) + 1
         return (
             <div className="card-panel white">
-                <h5 className="grey-text text-darken-3">Todo List</h5>
+                <h5 className="grey-text text-darken-3 list_title">Todo List</h5>
+                <Modal todoList={todoList} />
+                
                 <div className="input-field">
                     <label htmlFor="email">Name</label>
                     <input className="active" type="text" name="name" id="name" onChange={this.onChangeNameHandler} value={this.state.name} />
@@ -43,9 +48,14 @@ class ListScreen extends Component {
                     <label htmlFor="password">Owner</label>
                     <input className="active" type="text" name="owner" id="owner" onChange={this.onChangeOwnerHandler} value={this.state.owner} />
                 </div>
+                <div className='row'>
+                    <div className="col s3 list_heading">Description</div>
+                    <div className="col s3 list_heading">Assigned</div>
+                    <div className="col s3 list_heading">Due Date</div>
+                    <div className="col s3 list_heading">Status</div>
+                </div>
                 <ItemsList todoList={todoList} />
-                
-                <Link to={{pathname:'/todoList/' + todoList.id + '/' + todoList.items.length, 
+                <Link to={{pathname:'/todoList/' + todoList.id + '/' + nextitemkey, 
                             item: {
                                 description: '',
                                 assigned_to: '',
