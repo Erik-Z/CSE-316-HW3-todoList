@@ -14,7 +14,7 @@ class EditScreen extends Component {
           assigned_to: props.location.item.assigned_to,
           due_date: props.location.item.due_date,
           completed: props.location.item.completed,
-          key: props.match.params.itemID
+          key: props.match.params.itemID,
         }
     }
     
@@ -30,8 +30,8 @@ class EditScreen extends Component {
         this.setState({due_date: e.target.value})
     }
 
-    onChangeCompletedHandler = (e) => {
-        this.setState({completed: !this.state.completed})
+    handleCompletedChange = (event) => {
+        this.setState({completed: event.target.checked});
     }
 
     submitChangeHandler = (e) => {
@@ -46,7 +46,7 @@ class EditScreen extends Component {
         const id = this.props.match.params.itemID
         return (
             <div className="card-panel white">
-                <form className="col s12">
+                
                     <div className="row">
                         <div className="input-field col s6">
                             <input value ={this.state.description} id="description" type="text" onChange = {this.onChangeDescHandler}/>
@@ -58,20 +58,24 @@ class EditScreen extends Component {
                             <input value ={this.state.due_date} id="due_date" type="date" onChange = {this.onChangeDueDateHandler}/>
                         </div>
                         <div className="input-field col s12">
-                            <input type="checkbox" checked={this.state.completed} onChange = {this.onChangeCompletedHandler}/>
-                            <span>Completed</span>
+                            <label>
+                                <input type="checkbox" className="filled-in"  checked={this.state.completed} onChange={this.handleCompletedChange} />
+                                <span>Filled in</span>
+                            </label>
                         </div>
+                        
                         <div className="input-field col s6">
-                            <Link to={'/todoList/' + this.props.match.params.id} className="waves-effect waves-light btn" onClick = {this.submitChangeHandler}>
-                                Submit
-                            </Link>
+
+                            <Link to={'/todoList/' + this.props.match.params.id} className="waves-effect waves-light btn" onClick = {this.submitChangeHandler}> Submit </Link>
+                           
+                            
                             <a>  </a>
+                            
                             <Link to={'/todoList/' + this.props.match.params.id} className="waves-effect waves-light btn red">
                                 Cancel
                             </Link>
                         </div>
-                    </div>
-                </form>
+                    </div> 
             </div>
         )
     }
@@ -90,7 +94,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    editItem: (todoListId, item) => dispatch(editItemHandler(todoListId, item))
+    editItem: (todoListId, item) => dispatch(editItemHandler(todoListId, item)),
 })
 
 export default compose(
