@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
-import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler } from '../../store/database/asynchHandler'
+import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler, sortByDueDateHandler} from '../../store/database/asynchHandler'
 import Modal from "./modal.js";
 
 class ListScreen extends Component {
@@ -41,7 +41,16 @@ class ListScreen extends Component {
     }
 
     handleSortDueDate = () => {
-        
+        const id = this.props.todoList.id
+        const sorting = this.state.sorting
+
+        this.props.sortDueDate(id, sorting)
+
+        if(sorting == 'duedate'){
+            this.setState({sorting: null})
+        } else {
+            this.setState({sorting: 'duedate'})
+        }
     }
 
     handleSortStatus = () => {
@@ -72,7 +81,7 @@ class ListScreen extends Component {
                 <div className='row'>
                     <div className="col s2 list_heading" onClick={this.handleSortDesc}>Description</div>
                     <div className="col s2 list_heading">Assigned</div>
-                    <div className="col s3 list_heading">Due Date</div>
+                    <div className="col s3 list_heading" onClick={this.handleSortDueDate}>Due Date</div>
                     <div className="col s3 list_heading">Status</div>
                 </div>
                 <ItemsList todoList={todoList} />
@@ -105,7 +114,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
     changeListName: (id, name) => dispatch(changeNameHandler(id, name)),
     changeListOwner: (id, owner) => dispatch(changeOwnerHandler(id, owner)),
-    sortDescription: (id, sorting) => dispatch(sortByDescriptionHandler(id, sorting))
+    sortDescription: (id, sorting) => dispatch(sortByDescriptionHandler(id, sorting)),
+    sortDueDate: (id, sorting) => dispatch(sortByDueDateHandler(id, sorting))
 })
 
 export default compose(

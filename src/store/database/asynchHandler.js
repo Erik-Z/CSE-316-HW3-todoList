@@ -1,5 +1,64 @@
 import * as actionCreators from '../actions/actionCreators.js'
 
+function moveItem(from, to, items) {
+  // remove `from` item and store it
+  var f = items.splice(from, 1)[0];
+  // insert stored item into position `to`
+  items.splice(to, 0, f);
+}
+
+function compareDescription(a, b) {
+  var descriptionA = a.description.toUpperCase()
+  var descriptionB = b.description.toUpperCase()
+
+  let comparison = 0
+  if(descriptionA > descriptionB){
+    comparison = 1
+  } else if (descriptionA < descriptionB) {
+    comparison = -1
+  }
+  return comparison
+}
+
+function compareDescriptionRev(a, b){
+  var descriptionA = a.description.toUpperCase()
+  var descriptionB = b.description.toUpperCase()
+
+  let comparison = 0
+  if(descriptionA < descriptionB){
+  comparison = 1
+  } else if (descriptionA > descriptionB) {
+  comparison = -1
+  }
+  return comparison
+}
+
+function compareDueDate(a, b){
+  var due_dateA = a.due_date
+  var due_dateB = b.due_date
+
+  let comparison = 0
+  if(due_dateA > due_dateB){
+    comparison = 1
+  } else if (due_dateA < due_dateB) {
+    comparison = -1
+  }
+  return comparison
+}
+
+function compareDueDateRev(a, b) {
+  var due_dateA = a.due_date
+  var due_dateB = b.due_date
+
+  let comparison = 0
+  if(due_dateA < due_dateB){
+    comparison = 1
+  } else if (due_dateA > due_dateB) {
+    comparison = -1
+  }
+  return comparison
+}
+
 export const loginHandler = ({ credentials, firebase }) => (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
@@ -139,35 +198,19 @@ export const sortByDescriptionHandler = (todoListID, sorting) => (dispatch, getS
   })
 }
 
-function moveItem(from, to, items) {
-  // remove `from` item and store it
-  var f = items.splice(from, 1)[0];
-  // insert stored item into position `to`
-  items.splice(to, 0, f);
+export const sortByDueDateHandler = (todoListID, sorting) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    if(sorting == 'duedate'){
+      items.sort(compareDueDateRev)
+    } else {
+      items.sort(compareDueDate)
+    }
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.sortItemDueDate)
+    })
+  })
 }
 
-function compareDescription(a, b) {
-  var descriptionA = a.description.toUpperCase()
-  var descriptionB = b.description.toUpperCase()
-
-  let comparison = 0
-  if(descriptionA > descriptionB){
-    comparison = 1
-  } else if (descriptionA < descriptionB) {
-    comparison = -1
-  }
-  return comparison
-}
-
-function compareDescriptionRev(a, b){
-  var descriptionA = a.description.toUpperCase()
-  var descriptionB = b.description.toUpperCase()
-
-  let comparison = 0
-  if(descriptionA < descriptionB){
-  comparison = 1
-  } else if (descriptionA > descriptionB) {
-  comparison = -1
-  }
-  return comparison
-}

@@ -112,3 +112,9 @@ export function sortItemDescription() {
         type: 'SORT_ITEM_DESCRIPTION',
     }
 }
+
+export function sortItemDueDate() {
+    return {
+        type: 'SORT_ITEM_DUE_DATE',
+    }
+}
