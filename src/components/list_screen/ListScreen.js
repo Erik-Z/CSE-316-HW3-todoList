@@ -4,26 +4,25 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
+import { changeNameHandler, changeOwnerHandler } from '../../store/database/asynchHandler'
 
 class ListScreen extends Component {
     state = {
-        name: '',
-        owner: '',
+        name: this.props.todoList.name,
+        owner: this.props.todoList.owner,
     }
 
-    handleChange = (e) => {
-        const { target } = e;
+    onChangeNameHandler = (e) => {
+        this.setState({name: e.target.value}, function() {this.props.changeListName(this.props.todoList.id,this.state.name)})
+    }
 
-        this.setState(state => ({
-            ...state,
-            [target.id]: target.value,
-        }));
+    onChangeOwnerHandler = (e) => {
+        this.setState({owner: e.target.value}, function() {this.props.changeListOwner(this.props.todoList.id,this.state.owner)})
     }
 
     handleNewItem = (e) => {
         const { props } = this;
-        e.preventDefault()
-
     }
 
     render() {
@@ -38,14 +37,24 @@ class ListScreen extends Component {
                 <h5 className="grey-text text-darken-3">Todo List</h5>
                 <div className="input-field">
                     <label htmlFor="email">Name</label>
-                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={todoList.name} />
+                    <input className="active" type="text" name="name" id="name" onChange={this.onChangeNameHandler} value={this.state.name} />
                 </div>
                 <div className="input-field">
                     <label htmlFor="password">Owner</label>
-                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={todoList.owner} />
+                    <input className="active" type="text" name="owner" id="owner" onChange={this.onChangeOwnerHandler} value={this.state.owner} />
                 </div>
                 <ItemsList todoList={todoList} />
-                <div className="card white center add-item-button" onClick={this.handleNewItem}> Add Item </div>
+                
+                <Link to={{pathname:'/todoList/' + todoList.id + '/' + todoList.items.length, 
+                            item: {
+                                description: '',
+                                assigned_to: '',
+                                due_date: '',
+                                completed: ''
+                            },
+                    }}>
+                    <div className="card white center add-item-button" onClick={this.handleNewItem}>Add Item</div>
+                </Link>
             </div>
         );
     }
@@ -62,8 +71,13 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+    changeListName: (id, name) => dispatch(changeNameHandler(id, name)),
+    changeListOwner: (id, owner) => dispatch(changeOwnerHandler(id, owner))
+})
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
     { collection: 'todoLists' },
   ]),

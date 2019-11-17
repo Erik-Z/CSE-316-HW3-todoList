@@ -12,6 +12,9 @@ const todoListReducer = (state = initState, action) => {
         case 'CREATE_TODO_LIST_ERROR':
                 console.log('Created todolist error', action.error)
                 return state;
+        case 'EDIT_ITEM':
+            console.log('Edited item', action.item)
+            return state;
         default:
             return state;
             break;

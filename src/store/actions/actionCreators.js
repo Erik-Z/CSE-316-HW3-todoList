@@ -71,3 +71,10 @@ export function editListItemError(error) {
         error
     }
 }
+
+export function changeListName(name) {
+    return {
+        type: 'CHANGE_LIST_NAME',
+        name
+    }
+}

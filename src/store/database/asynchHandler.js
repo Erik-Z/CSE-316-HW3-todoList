@@ -45,11 +45,6 @@ export const createTodoListHandler = (todoList) => (dispatch, getState, {getFire
   })
 }
 
-export const addItemHandler = (todoList, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
-  const firestore = getFirestore()
-  
-}
-
 export const editItemHandler = (todoListID, item) => (dispatch, getState, {getFirebase, getFirestore}) => {
   const firestore = getFirestore()
   console.log('edit item')
@@ -63,7 +58,22 @@ export const editItemHandler = (todoListID, item) => (dispatch, getState, {getFi
   }).catch((err) => {
     dispatch(actionCreators.editListItemError)
   })
-  
-  
+}
 
+export const changeNameHandler = (todoListID, name) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  firestore.collection('todoLists').doc(todoListID).update({
+    name: name
+  }).then(() => {
+    dispatch(actionCreators.changeListName)
+  })
+}
+
+export const changeOwnerHandler = (todoListID, owner) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  firestore.collection('todoLists').doc(todoListID).update({
+    owner: owner
+  }).then(() => {
+    dispatch(actionCreators.changeListName)
+  })
 }
