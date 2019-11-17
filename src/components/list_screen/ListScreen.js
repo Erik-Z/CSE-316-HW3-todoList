@@ -49,8 +49,8 @@ class ListScreen extends Component {
                     <input className="active" type="text" name="owner" id="owner" onChange={this.onChangeOwnerHandler} value={this.state.owner} />
                 </div>
                 <div className='row'>
-                    <div className="col s3 list_heading">Description</div>
-                    <div className="col s3 list_heading">Assigned</div>
+                    <div className="col s2 list_heading">Description</div>
+                    <div className="col s2 list_heading">Assigned</div>
                     <div className="col s3 list_heading">Due Date</div>
                     <div className="col s3 list_heading">Status</div>
                 </div>

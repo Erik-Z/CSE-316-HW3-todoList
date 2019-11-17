@@ -60,7 +60,7 @@ div.banner {
 
 .item_content{
   font-weight: normal;
-  font-size: 20pt;
+  font-size: 14pt;
 }
 
 #list_trash {
@@ -78,4 +78,10 @@ div.banner {
 
 .list_title{
   display: inline;
+}
+
+.fixed-action-btn{
+  position: absolute !important; 
+  display: inline-block;
+  top: 40px;
 }
