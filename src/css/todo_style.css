@@ -45,4 +45,37 @@ div.banner {
   width: 50%;
   margin: auto;
   cursor: pointer;
+  position: absolute;
+  left: 25%
+}
+
+.list_heading {
+  font-weight: bold;
+  font-size: 24pt;
+}
+
+.list_heading:hover {
+  color: var(--swatch-accent);
+}
+
+.item_content{
+  font-weight: normal;
+  font-size: 20pt;
+}
+
+#list_trash {
+  font-size: 40pt;
+  cursor: pointer;
+  display: inline;
+  position: absolute;
+  left: 90%;
+  top: 70px;
+}
+#list_trash:hover {
+  color: var(--swatch-accent);
+  cursor: pointer;
+}
+
+.list_title{
+  display: inline;
 }
