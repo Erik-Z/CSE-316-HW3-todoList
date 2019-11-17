@@ -59,6 +59,14 @@ function compareDueDateRev(a, b) {
   return comparison
 }
 
+function compareCompleted(a, b){
+  return (a.completed === b.completed) ? 0 : a ? 1 : -1
+}
+
+function compareCompletedRev(a, b){
+  return (a.completed === b.completed) ? 0 : a ? -1 : 1
+}
+
 export const loginHandler = ({ credentials, firebase }) => (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
@@ -210,6 +218,22 @@ export const sortByDueDateHandler = (todoListID, sorting) => (dispatch, getState
     }
     firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
       dispatch(actionCreators.sortItemDueDate)
+    })
+  })
+}
+
+export const sortByStatusHandler = (todoListID, sorting) => (dispatch, getState, {getFirebase, getFirestore}) => {
+  const firestore = getFirestore()
+  var items
+  firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
+    items = doc.data().items
+    if(sorting == 'status'){
+      items.sort(compareCompletedRev)
+    } else {
+      items.sort(compareCompleted)
+    }
+    firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
+      dispatch(actionCreators.sortItemStatus)
     })
   })
 }

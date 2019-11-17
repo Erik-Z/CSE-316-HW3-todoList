@@ -32,6 +32,10 @@ const todoListReducer = (state = initState, action) => {
             return state;
         case 'SORT_ITEM_DUE_DATE':
             console.log('Sorted Items by Due Date')
+            return state;
+        case 'SORT_ITEM_STATUS':
+            console.log('Sorted Items by Status')
+            return state;
         default:
             return state;
             break;

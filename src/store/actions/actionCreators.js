@@ -118,3 +118,9 @@ export function sortItemDueDate() {
         type: 'SORT_ITEM_DUE_DATE',
     }
 }
+
+export function sortItemStatus() {
+    return {
+        type: 'SORT_ITEM_STATUS',
+    }
+}

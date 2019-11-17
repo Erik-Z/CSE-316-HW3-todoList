@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
-import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler, sortByDueDateHandler} from '../../store/database/asynchHandler'
+import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler, sortByDueDateHandler, sortByStatusHandler} from '../../store/database/asynchHandler'
 import Modal from "./modal.js";
 
 class ListScreen extends Component {
@@ -54,7 +54,15 @@ class ListScreen extends Component {
     }
 
     handleSortStatus = () => {
-        
+        const id = this.props.todoList.id
+        const sorting = this.state.sorting
+        this.props.sortStatus(id, sorting)
+
+        if(sorting == 'status'){
+            this.setState({sorting: null})
+        } else {
+            this.setState({sorting: 'status'})
+        }
     }
     
 
@@ -82,7 +90,7 @@ class ListScreen extends Component {
                     <div className="col s2 list_heading" onClick={this.handleSortDesc}>Description</div>
                     <div className="col s2 list_heading">Assigned</div>
                     <div className="col s3 list_heading" onClick={this.handleSortDueDate}>Due Date</div>
-                    <div className="col s3 list_heading">Status</div>
+                    <div className="col s3 list_heading" onClick={this.handleSortStatus}>Status</div>
                 </div>
                 <ItemsList todoList={todoList} />
                 <Link to={{pathname:'/todoList/' + todoList.id + '/' + nextitemkey, 
@@ -115,7 +123,8 @@ const mapDispatchToProps = dispatch => ({
     changeListName: (id, name) => dispatch(changeNameHandler(id, name)),
     changeListOwner: (id, owner) => dispatch(changeOwnerHandler(id, owner)),
     sortDescription: (id, sorting) => dispatch(sortByDescriptionHandler(id, sorting)),
-    sortDueDate: (id, sorting) => dispatch(sortByDueDateHandler(id, sorting))
+    sortDueDate: (id, sorting) => dispatch(sortByDueDateHandler(id, sorting)),
+    sortStatus: (id, sorting) => dispatch(sortByDueDateHandler(id, sorting))
 })
 
 export default compose(
