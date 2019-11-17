@@ -1,11 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Button} from 'react-materialize';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { deleteListItemHandler, moveItemUpHandler, moveItemDownHandler } from '../../store/database/asynchHandler'
 
 class ItemCard extends React.Component {
     
-    handleDeleteListItem = () => {
+    handleDeleteListItem = (e) => {
+        const { item } = this.props;
+        const {todoList} = this.props;
+        this.props.deleteItem(todoList.id, item)
+    }
 
+    handleMoveItemUp = () => {
+        const { item } = this.props;
+        const {todoList} = this.props;
+        this.props.moveItemUp(todoList.id, item)
+    }
+
+    handleMoveItemDown = () => {
+        const { item } = this.props;
+        const {todoList} = this.props;
+        this.props.moveItemDown(todoList.id, item)
     }
 
     render() {
@@ -52,12 +69,32 @@ class ItemCard extends React.Component {
                 className="red FAB_Card"
                 large
                 >
-                    <Button floating icon= '^' className="green" />
-                    <Button floating icon= 'v' className="green" />
+                    {
+                        item.index != 0 ? <Button floating icon= '^' className="green" onClick={this.handleMoveItemUp}/> : <Button floating icon= '^' className="grey" />
+                    }
+                    {
+                        todoList.items.length - 1 != item.index ? <Button floating icon= 'v' className="green" onClick={this.handleMoveItemDown}/> : <Button floating icon= 'v' className="grey" />
+                    }
+                    
                     <Button floating icon= 'X' className="red" onClick={this.handleDeleteListItem}/>
                 </Button>
             </div>
         );
     }
 }
-export default ItemCard;
+const mapStateToProps = (state, ownProps) => {
+    const todoList = ownProps.todoList;
+    return {
+        todoList,
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    //deleteList: todoListid => dispatch(deleteListHandler(todoListid))
+    deleteItem: (todolistid, item) => dispatch(deleteListItemHandler(todolistid, item)),
+    moveItemUp: (todolistid, item) => dispatch(moveItemUpHandler(todolistid, item)),
+    moveItemDown: (todolistid, item) => dispatch(moveItemDownHandler(todolistid, item))
+})
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps))(ItemCard);
