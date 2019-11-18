@@ -85,3 +85,11 @@ div.banner {
   display: inline-block;
   top: 40px;
 }
+
+.edit_screen_checkbox{
+  top: -20px !important;
+}
+
+.pink-lighten-3{
+  background-color: pink !important;
+}

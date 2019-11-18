@@ -118,7 +118,12 @@ export const editItemHandler = (todoListID, item) => (dispatch, getState, {getFi
   var items
   firestore.collection('todoLists').doc(todoListID).get().then((doc) => {
     items = doc.data().items
-    items[item.key] = item
+    if(item.index < items.length){
+      items[item.index] = item
+    } else{
+      items[items.length] = item
+    }
+    console.log(item.index, items)
     firestore.collection('todoLists').doc(todoListID).update({items: items}).then(() => {
       dispatch(actionCreators.editListItem)
     })

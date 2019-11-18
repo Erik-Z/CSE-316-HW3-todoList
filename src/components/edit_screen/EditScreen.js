@@ -4,17 +4,21 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { editItemHandler } from '../../store/database/asynchHandler'
+import { Redirect } from 'react-router-dom'
 
 
 class EditScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-          description: props.location.item.description,
-          assigned_to: props.location.item.assigned_to,
-          due_date: props.location.item.due_date,
-          completed: props.location.item.completed,
-          key: props.match.params.itemID,
+        if(props.location.item != null){
+            this.state = {
+            description: props.location.item.description,
+            assigned_to: props.location.item.assigned_to,
+            due_date: props.location.item.due_date,
+            completed: props.location.item.completed,
+            index: props.location.item.index,
+            key: props.match.params.itemID,
+            }
         }
     }
     
@@ -44,6 +48,10 @@ class EditScreen extends Component {
 
     render() {
         const id = this.props.match.params.itemID
+        const auth = this.props.auth;
+        if (!this.props.auth.uid) {
+            return <Redirect to="/login" />;
+        }
         return (
             <div className="card-panel white">
                 
@@ -58,13 +66,13 @@ class EditScreen extends Component {
                             <input value ={this.state.due_date} id="due_date" type="date" onChange = {this.onChangeDueDateHandler}/>
                         </div>
                         <div className="input-field col s12">
-                            <label>
+                            <label className='edit_screen_checkbox'>
                                 <input type="checkbox" className="filled-in"  checked={this.state.completed} onChange={this.handleCompletedChange} />
                                 <span>Filled in</span>
                             </label>
                         </div>
                         
-                        <div className="input-field col s6">
+                        <div className="input-field col s6 ">
 
                             <Link to={'/todoList/' + this.props.match.params.id} className="waves-effect waves-light btn" onClick = {this.submitChangeHandler}> Submit </Link>
                            
@@ -86,10 +94,14 @@ const mapStateToProps = (state, ownProps) => {
     const { itemID } = ownProps.match.params;
     const { todoLists } = state.firestore.data;
     const todoList = todoLists ? todoLists[id] : null;
-    todoList.id = id;
-    const item = todoList.items[itemID]
+    var item = null
+    if(todoList != null){
+        todoList.id = id;
+        item = todoList.items[itemID]
+    }
     return {
-        todoList, item
+        todoList, item,
+        auth: state.firebase.auth,
     }
 }
 

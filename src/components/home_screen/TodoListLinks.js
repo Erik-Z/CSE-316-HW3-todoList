@@ -6,6 +6,8 @@ import TodoListCard from './TodoListCard';
 
 
 class TodoListLinks extends React.Component {
+    
+
     render() {
         const todoLists = this.props.todoLists;
         console.log(todoLists);
@@ -13,7 +15,7 @@ class TodoListLinks extends React.Component {
             <div className="todo-lists section">
                 {todoLists && todoLists.map(todoList => (
                     <Link to={'/todoList/' + todoList.id} key={todoList.id}>
-                        <TodoListCard todoList={todoList} />
+                        <TodoListCard todoList={todoList} todoLists={todoLists}/>
                     </Link>
                 ))}
             </div>

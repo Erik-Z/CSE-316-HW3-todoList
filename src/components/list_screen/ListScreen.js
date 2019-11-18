@@ -9,10 +9,15 @@ import { changeNameHandler, changeOwnerHandler, sortByDescriptionHandler, sortBy
 import Modal from "./modal.js";
 
 class ListScreen extends Component {
-    state = {
-        name: this.props.todoList.name,
-        owner: this.props.todoList.owner,
-        sorting: null
+    constructor(props) {
+        super(props);
+        if(this.props.todoList != null){
+            this.state = {
+                name: this.props.todoList.name,
+                owner: this.props.todoList.owner,
+                sorting: null
+            }
+        }
     }
 
     onChangeNameHandler = (e) => {
@@ -70,7 +75,7 @@ class ListScreen extends Component {
         const auth = this.props.auth;
         const todoList = this.props.todoList;
         if (!auth.uid) {
-            return <Redirect to="/" />;
+            return <Redirect to="/login" />;
         }
         const nextitemkey = Math.max.apply(Math, todoList.items.map(function(o) { return o.key; })) + 1
         return (
@@ -98,7 +103,8 @@ class ListScreen extends Component {
                                 description: '',
                                 assigned_to: '',
                                 due_date: '',
-                                completed: ''
+                                completed: '',
+                                index: todoList.items.length
                             },
                     }}>
                     <div className="card white center add-item-button" onClick={this.handleNewItem}>Add Item</div>
@@ -112,7 +118,10 @@ const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
   const { todoLists } = state.firestore.data;
   const todoList = todoLists ? todoLists[id] : null;
-  todoList.id = id;
+  if(todoList != null){
+    todoList.id = id;
+  }
+  
   return {
     todoList,
     auth: state.firebase.auth,

@@ -36,7 +36,8 @@ class ItemCard extends React.Component {
                         description: item.description,
                         assigned_to: item.assigned_to,
                         due_date: item.due_date,
-                        completed: item.completed
+                        completed: item.completed,
+                        index: item.index
                     } 
                 }}>
                     <div className="card-content grey-text text-darken-3">
